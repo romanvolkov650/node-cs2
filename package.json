@@ -35,7 +35,8 @@
 		"globaloffensive-sharecode": "^1.1.1",
 		"long": "^5.2.3",
 		"protobufjs": "^7.2.5",
-		"steamid": "^2.0.0"
+		"steamid": "^2.0.0",
+		"lzma": "^2.3.2"
 	},
 	"peerDependencies": {
 		"steam-user": ">=4.2.0"

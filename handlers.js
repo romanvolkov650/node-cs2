@@ -8,6 +8,8 @@ const Protos = require('./protobufs/generated/_load.js');
 
 let handlers = NodeCS2.prototype._handlers;
 
+const lzma = require("lzma")
+
 /**
  * Helper function to map sticker-like items (stickers, keychains, variations)
  * Ensures all fields including highlight_reel and wrapped_sticker are properly handled
@@ -606,17 +608,19 @@ handlers[Language.StoreGetUserDataResponse] = function (body) {
 	let proto;
 	try {
 		proto = decodeProto(Protos.CMsgStoreGetUserDataResponse, body);
+		const priceSheet = lzma.decompress(proto.price_sheet);
+		console.log('price sheet: ', priceSheet);
 	} catch (err) {
-		this.emit('error', new Error(`Failed to decode RecurringMissionSchema: ${err.message}`));
+		this.emit('error', new Error(`Failed to decode storeGetUserData: ${err.message}`));
 		return;
 	}
 
 	if (!proto) {
-		this.emit('debug', "RecurringMissionSchema missing data");
+		this.emit('debug', "storeGetUserData missing data");
 		return;
 	}
 
-	this.emit('recurringMissionSchema', proto);
+	this.emit('storeGetUserData', proto);
 };
 
 function decodeProto(proto, encoded) {
